@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './CSS/report.css'
 import './CSS/global.css'
 
@@ -89,18 +90,21 @@ const messages = [
     }
   ]
 
-  
+ 
   class ModalMessage extends React.Component {
     constructor(props) {
       super(props);
+      this.btnRef= React.createRef();
       this.toggle = this.toggle.bind(this);
       this.state = {
           modalClasses: ['modal','fade']
       }
+      
+      
     }
   
     toggle() {
-      console.log(this.refs.messageModal)
+      console.log(this.ref.messageModal)
       document.body.className += ' modal-open'
       
       let modalClasses = this.state.modalClasses
@@ -121,6 +125,7 @@ const messages = [
           modalClasses
       })
     }
+    
   
     render() {
       return (
@@ -130,12 +135,15 @@ const messages = [
           tabIndex="-1"
           role="dialog"
           aria-hidden="true"
-          ref="messageModal"
+          //ref="messageModal"
+          ref={(ref) => this.messageModal = ref}
+          
         >
           <div className="modal-dialog modal-dialog-centered modal-lg">
             <div className="modal-content">
               <div className="modal-header">
                 <div>
+                
                   <small className="text-uppercase text-muted">Subject</small>
                   <h4 className="modal-title">{this.props.message.subject}</h4>
                 </div>
@@ -186,8 +194,11 @@ const messages = [
         </div>
       );
     }
+    
   }
-  
+  ModalMessage.propTypes = {
+    message:PropTypes.string
+  };
 
   class Report extends React.Component {
     constructor(props) {
@@ -249,7 +260,7 @@ const messages = [
   
     toggleMarkAll() {
       let messages = [...this.state.messages];
-      messages.map((v, k) => {
+      messages.map((v) => {
         return (v.marked = v.marked ? 0 : 1);
       });
       this.setState({ messages });
@@ -330,7 +341,7 @@ const messages = [
                         className="badge badge-pill badge-dark small font-weight-light ml-1"
                         title="Unread">
                         {
-                          this.state.messages.filter((v, k) => {
+                          this.state.messages.filter((v) => {
                             return !v.read;
                           }).length
                         }
@@ -402,7 +413,7 @@ const messages = [
                       </button>
                       
                       {this.state.messages &&
-                      this.state.messages.filter((v, k) => {
+                      this.state.messages.filter((v) => {
                         return !v.read;
                        // if (v.marked === 1) {
                          // return v;
