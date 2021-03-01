@@ -1,0 +1,7 @@
+.modal.show {
+    display: block !important;
+}
+
+body .modal-open {
+    display: block !important;
+}
