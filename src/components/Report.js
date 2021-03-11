@@ -94,17 +94,16 @@ const messages = [
   class ModalMessage extends React.Component {
     constructor(props) {
       super(props);
-      this.btnRef= React.createRef();
+      this.messageModalRef= React.createRef();
       this.toggle = this.toggle.bind(this);
       this.state = {
           modalClasses: ['modal','fade']
-      }
-      
+      }     
       
     }
   
     toggle() {
-      console.log(this.ref.messageModal)
+      console.log(this.messageModalRef)
       document.body.className += ' modal-open'
       
       let modalClasses = this.state.modalClasses
@@ -210,11 +209,10 @@ const messages = [
       this.toggleMarkAll = this.toggleMarkAll.bind(this);
       this.deleteMarked = this.deleteMarked.bind(this);
       this.refreshMessages = this.refreshMessages.bind(this);
-      //this.deleteMessages = this.deleteMessages.bind(this);
+      this.deleteMessages = this.deleteMessages.bind(this);
       this.ModalMessage = React.createRef();
       this.activetags = this.activetags.bind(this);
       this.inactivetags = this.inactivetags.bind(this);
-      /*this.ModalCompose = React.createRef();*/
       this.state = {
         initMessages: messages,
         messages: messages,
@@ -279,17 +277,18 @@ const messages = [
       if (tbd.length > 0) {
         self.activetags(tbd);
       }
-      else {
+      else if (tbd.length) {
         self.inactivetags(tbd);
       }
+      
     }
-  
+   
     refreshMessages() {
       let initMessages = [...this.state.initMessages];
       this.setState({ messages: initMessages });
     }
-  
-    /*deleteMessages(arr) {
+
+    deleteMessages(arr) {
       let messages = [...this.state.messages];
       let deleted = [...this.state.deleted];
       for (var i = arr.length - 1; i >= 0; i--) {
@@ -297,8 +296,8 @@ const messages = [
         messages.splice(arr[i], 1);
       }
       this.setState({ messages, deleted });
-    }*/
-
+    }
+  
     activetags(arr) {
       let messages = [...this.state.messages];
       let activetag = [...this.state.activetag];
@@ -414,28 +413,35 @@ const messages = [
                       
                       {this.state.messages &&
                       this.state.messages.filter((v) => {
-                        return !v.read;
-                       // if (v.marked === 1) {
-                         // return v;
+                        //return !v.read;
+                        if (v.marked === 1) {
+                          return v;
                           
-                       // }
+                        }
                       }).length > 0 ? (
                         <div className="btn-group mr-sm-auto mr-none">
                           <button
                             type="button"
                             className="btn btn-outline-secondary dropdown-toggle text-uppercase"
                             data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
                           />
                           <div className="dropdown-menu" id="dd1">
-                            <a href = {{ void: 0 }}
+                            <a 
                               className="dropdown-item"
                               onClick={this.deleteMarked}
                             >
-                              Move to Active tags
-                              
-                              
+                              Move to Active tags               
+                            </a>
+                            <a 
+                              className="dropdown-item"
+                              onClick={this.deleteMarked}
+                            >
+                              Move to Inactive tags               
                             </a>
                           </div>
+                            
                         </div>
                       ) : null}
                     </div>
