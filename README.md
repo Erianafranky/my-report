@@ -47,5 +47,5 @@ Run npm install to install the dependencies in package.json.
 
 Run npm start 
 
-Go to [http://localhost:3000/]
+Go to [http://localhost:3000](http://localhost:3000)
 
